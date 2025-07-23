@@ -1,3 +1,4 @@
+/* ======= GLOBAL STYLES ======= */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -22,7 +23,6 @@ a {
   justify-content: space-between;
 }
 
-
 .hero-image-container {
   width: 100%;
   overflow: hidden;
@@ -35,7 +35,6 @@ a {
   max-height: 400px;
   display: block;
 }
-
 
 .menu-btn {
   font-size: 1.8rem;
@@ -224,4 +223,88 @@ a {
 .about-container li {
   margin-bottom: 0.5rem;
   font-size: 1.05rem;
+}
+
+/* ======= FADE MESSAGE ======= */
+.fade-message {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  z-index: 999;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  opacity: 1;
+}
+
+.fade-message.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* ======= AUTH FORMS ======= */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.auth-form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background-color: #0056b3;
+}
+
+.auth-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
 }
