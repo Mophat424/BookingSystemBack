@@ -1,0 +1,136 @@
+/* src/dashboard/AdminDashboard/AdminDashboard.css */
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.toggle-button:hover {
+  color: #bbb; /* Subtle hover effect */
+}
+
+.dashboard-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.admin-body {
+  display: flex;
+  flex: 1;
+}
+
+.admin-aside {
+  background-color: #f4f4f4;
+  width: 250px;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  padding: 1rem; /* Inner padding for content */
+}
+
+/* Hidden drawer state */
+.admin-aside.closed {
+  transform: translateX(-100%);
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+}
+
+/* Open drawer state */
+.admin-aside.open {
+  transform: translateX(0);
+  position: relative;
+}
+
+/* Drawer Menu Styles */
+.drawer-container {
+  padding-top: 2rem; /* Space for close button */
+}
+
+.drawer-container h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd; /* Subtle divider */
+}
+
+.drawer-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drawer-container li {
+  margin-bottom: 0.5rem;
+}
+
+.drawer-container a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.drawer-container a:hover {
+  background-color: #e0e0e0; /* Light gray hover */
+  color: #222;
+}
+
+.drawer-container a svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  color: #555; /* Icon color */
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0.5rem;
+  display: block;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.close-button:hover {
+  color: #bbb; /* Subtle hover effect */
+}
+
+.admin-main {
+  flex: 1;
+  padding: 1rem;
+}
+
+/* Access Denied Message */
+.access-denied {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: red;
+}

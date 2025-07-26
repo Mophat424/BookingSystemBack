@@ -1,0 +1,112 @@
+.nav-container {
+  font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f5f7fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-start,
+.navbar-center,
+.navbar-end {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #444;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  margin: 5px 0;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.nav-links li a:hover {
+  color: #4caf50;
+}
+
+.navbar-center {
+  flex-grow: 1;
+}
+
+.navbar-end .auth-links {
+  display: flex;
+  gap: 10px;
+}
+
+.navbar-end .auth-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.navbar-end .auth-links a:hover {
+  color: #4caf50;
+}
+
+.profile-btn {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #45a049;
+}
+
+.logo {
+  width: 60px;
+}
+
+@media (max-width: 768px) {
+  .navbar-center {
+    display: none;
+  }
+  .navbar-end .auth-links {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
