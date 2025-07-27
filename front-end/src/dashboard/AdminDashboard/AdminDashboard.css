@@ -61,7 +61,7 @@
 
 /* Drawer Menu Styles */
 .drawer-container {
-  padding-top: 2rem; /* Space for close button */
+  padding-top: 0; /* No need for extra space since close button is removed */
 }
 
 .drawer-container h2 {
@@ -106,22 +106,7 @@
   color: #555; /* Icon color */
 }
 
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin: 0.5rem;
-  display: block;
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-
-.close-button:hover {
-  color: #bbb; /* Subtle hover effect */
-}
-
+/* Removed .close-button styles since it’s no longer used */
 .admin-main {
   flex: 1;
   padding: 1rem;

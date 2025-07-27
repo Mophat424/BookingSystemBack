@@ -11,12 +11,15 @@
 //   const isAdmin = userRole === 'admin';
 //   const isUser = userRole === 'user';
 
+//   // Debug log to check initial state
+//   console.log('Nav - userToken:', userToken, 'userRole:', userRole);
+
 //   return (
 //     <div className="nav-container">
 //       <div className="navbar">
 //         <div className="navbar-start">
 //           <div className="dropdown">
-//             <button className="menu-toggle">☰</button>
+//             {/* <button className="menu-toggle">☰</button> */}
 //             <ul className="dropdown-menu">
 //               <li><NavLink to="/">Home</NavLink></li>
 //               <li><NavLink to="/about">About</NavLink></li>
@@ -89,26 +92,6 @@ const Nav = () => {
     <div className="nav-container">
       <div className="navbar">
         <div className="navbar-start">
-          <div className="dropdown">
-            <button className="menu-toggle">☰</button>
-            <ul className="dropdown-menu">
-              <li><NavLink to="/">Home</NavLink></li>
-              <li><NavLink to="/about">About</NavLink></li>
-              {userToken && (
-                <li>
-                  <NavLink to={isAdmin ? '/admin/dashboard' : isUser ? '/user/dashboard' : '/dashboard/analytics'}>
-                    Dashboard
-                  </NavLink>
-                </li>
-              )}
-              {!userToken && (
-                <>
-                  <li><NavLink to="/register">Register</NavLink></li>
-                  <li><NavLink to="/login">Login</NavLink></li>
-                </>
-              )}
-            </ul>
-          </div>
           <img src={logo} alt="EventMaster Logo" className="logo" />
         </div>
         <div className="navbar-center">

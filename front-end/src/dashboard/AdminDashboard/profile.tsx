@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../../features/login/userSlice";
 import { useGetUserByIdQuery } from "../../features/users/usersAPI";
-import UpdateProfile from "./manageUsers/UpdateProfile";
+import UpdateProfile from "./ManageUsers/UpdateProfile";
 import type { RootState } from "../../app/store";
 
 const Profile = () => {

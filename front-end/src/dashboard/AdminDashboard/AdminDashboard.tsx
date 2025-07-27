@@ -1,3 +1,4 @@
+// src/dashboard/AdminDashboard/AdminDashboard.tsx
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../../components/nav/Nav";
@@ -25,16 +26,16 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <Navbar />
       <div className="admin-header">
-        <button className="toggle-button" onClick={handleDrawerToggle}>
+        <button
+          className="toggle-button"
+          onClick={handleDrawerToggle}
+        >
           {drawerOpen ? <IoCloseSharp /> : <FaBars />}
         </button>
         <span className="dashboard-title">Welcome to your Admin Dashboard</span>
       </div>
       <div className="admin-body">
         <aside className={`admin-aside ${drawerOpen ? "open" : "closed"}`}>
-          <button className="close-button" onClick={handleDrawerToggle}>
-            <IoCloseSharp />
-          </button>
           <AdminDrawer />
         </aside>
         <main className="admin-main">
