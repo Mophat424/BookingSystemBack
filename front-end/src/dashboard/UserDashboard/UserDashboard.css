@@ -1,41 +1,139 @@
-/* src/dashboard/UserDashboard.css or App.css */
+/* src/dashboard/UserDashboard/UserDashboard.css */
+
 .user-dashboard {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.dashboard-section {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
+.user-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2c3e50; /* Slightly lighter dark blue for user theme */
+  color: #fff;
+  padding: 1rem;
 }
 
-.dashboard-section h2 {
-  margin-top: 0;
-  color: #333;
-}
-
-.dashboard-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.dashboard-section li {
-  padding: 5px 0;
-}
-
-.dummy-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
+.toggle-button {
+  background: none;
   border: none;
-  border-radius: 5px;
+  color: white;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
-.dummy-button:hover {
-  background-color: #45a049;
+.toggle-button:hover {
+  color: #ecf0f1; /* Subtle hover effect with light gray */
+}
+
+.dashboard-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.user-body {
+  display: flex;
+  flex: 1;
+}
+
+.user-aside {
+  background-color: #ecf0f1; /* Light gray background for user theme */
+  width: 250px;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  padding: 1rem; /* Inner padding for content */
+}
+
+/* Hidden drawer state */
+.user-aside.closed {
+  transform: translateX(-100%);
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+}
+
+/* Open drawer state */
+.user-aside.open {
+  transform: translateX(0);
+  position: relative;
+}
+
+/* Drawer Menu Styles */
+.drawer-container {
+  padding-top: 0; /* No extra space since toggle is in header */
+}
+
+.drawer-container h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2c3e50; /* Matches header color for consistency */
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd; /* Subtle divider */
+}
+
+.drawer-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100vh - 60px); /* Prevent overflow beyond viewport minus header */
+  overflow-y: auto; /* Enable scrolling if needed */
+}
+
+.drawer-container li {
+  margin-bottom: 0.5rem;
+}
+
+.drawer-container a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #2c3e50;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.drawer-container a:hover {
+  background-color: #d5dbe0; /* Slightly darker gray hover for user theme */
+  color: #1a252f;
+}
+
+.drawer-container a svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  color: #34495e; /* Darker icon color for user theme */
+}
+
+.user-main {
+  flex: 1;
+  padding: 1rem;
+}
+
+/* Default View Styles */
+.default-view {
+  text-align: center;
+  padding: 2rem;
+  color: #2c3e50; /* Matches user theme */
+}
+
+.default-view h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.default-view p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Access Denied Message */
+.access-denied {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: red;
 }

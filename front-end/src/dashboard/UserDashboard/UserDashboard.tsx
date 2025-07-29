@@ -1,26 +1,130 @@
-// src/dashboard/UserDashboard.tsx
-// import React from 'react';
+// import { useState } from "react";
+// import { Route, Routes } from "react-router-dom";
+// import Navbar from "../../components/nav/Nav";
+// import UserDrawer from "./aside/UserDrawer";
+// import { FaBars } from "react-icons/fa";
+// import { IoCloseSharp } from "react-icons/io5";
+// import Footer from "../../components/footer/Footer";
+// import { useSelector } from "react-redux";
+// import type { RootState } from "../../app/store";
+// import "./UserDashboard.css";
+// import Events from "./Events/Events";
+// import BookingHistory from "./Bookings/BookingHistory";
+// import ProfileManagement from "./Profile/ProfileManagement";
+
+// const UserDashboard = () => {
+//   const [drawerOpen, setDrawerOpen] = useState(false);
+//   const { user } = useSelector((state: RootState) => state.user);
+
+//   const handleDrawerToggle = () => {
+//     setDrawerOpen((prev) => !prev);
+//     console.log("Drawer toggle to:", !drawerOpen); // Debug log
+//   };
+
+//   if (!user || user.role !== "user") {
+//     return <div className="access-denied">Access denied. Users only!</div>;
+//   }
+
+//   return (
+//     <div className="user-dashboard">
+//       <Navbar />
+//       <div className="user-header">
+//         <button
+//           className="toggle-button"
+//           onClick={handleDrawerToggle}
+//           aria-label={drawerOpen ? "Close menu" : "Open menu"}
+//         >
+//           {drawerOpen ? <IoCloseSharp /> : <FaBars />}
+//         </button>
+//         <span className="dashboard-title">Welcome to your User Dashboard</span>
+//       </div>
+//       <div className="user-body">
+//         <aside className={`user-aside ${drawerOpen ? "open" : "closed"}`}>
+//           <UserDrawer />
+//         </aside>
+//         <main className="user-main">
+//           <Routes>
+//             <Route path="events" element={<Events />} />
+//             <Route path="bookings/history" element={<BookingHistory />} />
+//             <Route path="profile" element={<ProfileManagement />} />
+//             <Route path="payments" element={<div>Payments Placeholder</div>} />
+//           </Routes>
+//         </main>
+//       </div>
+//       <Footer />
+//     </div>
+//   );
+// };
+
+// export default UserDashboard;
+
+
+
+
+
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "../../components/nav/Nav";
+import UserDrawer from "./aside/UserDrawer";
+import { FaBars } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
+import Footer from "../../components/footer/Footer";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 import "./UserDashboard.css";
+import Events from "./Events/Events";
+import BookingHistory from "./Bookings/BookingHistory";
+import ProfileManagement from "./Profile/ProfileManagement";
 
 const UserDashboard = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen((prev) => !prev);
+    console.log("Drawer toggle to:", !drawerOpen); // Debug log
+  };
+
+  if (!user || user.role !== "user") {
+    return <div className="access-denied">Access denied. Users only!</div>;
+  }
+
   return (
     <div className="user-dashboard">
-      <h1>Welcome to Your User Dashboard</h1>
-      <p>This is a temporary placeholder for the user dashboard.</p>
-      <div className="dashboard-section">
-        <h2>Upcoming Events</h2>
-        <ul>
-          <li>Event 1 - July 28, 2025</li>
-          <li>Event 2 - August 1, 2025</li>
-          <li>Event 3 - August 5, 2025</li>
-        </ul>
+      <Navbar />
+      <div className="user-header">
+        <button
+          className="toggle-button"
+          onClick={handleDrawerToggle}
+          aria-label={drawerOpen ? "Close menu" : "Open menu"}
+        >
+          {drawerOpen ? <IoCloseSharp /> : <FaBars />}
+        </button>
+        <span className="dashboard-title">Welcome to your User Dashboard</span>
       </div>
-      <div className="dashboard-section">
-        <h2>Account Details</h2>
-        <p>Email: user@example.com</p>
-        <p>Joined: July 1, 2025</p>
+      <div className="user-body">
+        <aside className={`user-aside ${drawerOpen ? "open" : "closed"}`}>
+          <UserDrawer />
+        </aside>
+        <main className="user-main">
+          {!drawerOpen && (
+            <div className="default-view">
+              <h2>Welcome, User!</h2>
+              <p>Explore events, view your bookings, or manage your profile from the sidebar.</p>
+              <p>Click the menu icon to get started.</p>
+            </div>
+          )}
+          {drawerOpen && (
+            <Routes>
+              <Route path="events" element={<Events />} />
+              <Route path="bookings/history" element={<BookingHistory />} />
+              <Route path="profile" element={<ProfileManagement />} />
+              <Route path="payments" element={<div>Payments Placeholder</div>} />
+            </Routes>
+          )}
+        </main>
       </div>
-      <button className="dummy-button">View Tickets</button>
+      <Footer />
     </div>
   );
 };

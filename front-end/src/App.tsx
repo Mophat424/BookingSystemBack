@@ -1,46 +1,72 @@
-// // src/App.tsx
-// import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-// import { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logout } from './features/login/userSlice';
-// import type { RootState } from './app/store';
+// import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+// import { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { logout } from "./features/login/userSlice";
+// import type { RootState } from "./app/store";
 
-// import LandingPage from './pages/LandingPage';
-// import AboutPage from './pages/AboutPage';
-// import Register from './pages/auth/Register';
-// import VerifyUser from './pages/auth/VerifyUser';
-// import Login from './pages/auth/Login';
-// import AdminDashboard from './dashboard/AdminDashboard/AdminDashboard';
-// import UserDashboard from './dashboard/UserDashboard/UserDashboard';
-// import ManageEvents from './dashboard/AdminDashboard/ManageEvents/ManageEvents';
-// import ManageBookings from './dashboard/AdminDashboard/ManageBookings/ManageBookings';
-// import ManageSupportTickets from './dashboard/AdminDashboard/ManageSupportTickets/ManageSupportTickets'; // New import
+// // Pages
+// import LandingPage from "./pages/LandingPage";
+// import AboutPage from "./pages/AboutPage";
+// import Register from "./pages/auth/Register";
+// import VerifyUser from "./pages/auth/VerifyUser";
+// import Login from "./pages/auth/Login";
+// // import NotFoundPage from "./pages/NotFoundPage"; // Assume this exists or create it
+
+// // Dashboards and Components
+// import AdminDashboard from "./dashboard/AdminDashboard/AdminDashboard";
+// import UserDashboard from "./dashboard/UserDashboard/UserDashboard";
+// import ManageEvents from "./dashboard/AdminDashboard/ManageEvents/ManageEvents";
+// import ManageBookings from "./dashboard/AdminDashboard/ManageBookings/ManageBookings";
+// import ManageSupportTickets from "./dashboard/AdminDashboard/ManageSupportTickets/ManageSupportTickets";
+// import ManagePayments from "./dashboard/AdminDashboard/ManagePayments/ManagePayments";
+// import Users from "./dashboard/AdminDashboard/ManageUsers/Users";
+// import Events from "./dashboard/UserDashboard/Events/Events";
+// import BookEvent from "./dashboard/UserDashboard/Bookings/BookEvent";
+// import BookingHistory from "./dashboard/UserDashboard/Bookings/BookingHistory";
+// import ProfileManagement from "./dashboard/UserDashboard/Profile/ProfileManagement";
 
 // // Component to check authentication and role
 // const AuthChecker = () => {
 //   const dispatch = useDispatch();
 //   const { token, isAuthenticated } = useSelector((state: RootState) => state.user);
+//   const [isChecking, setIsChecking] = useState(true);
 
 //   useEffect(() => {
-//     if (token && !isAuthenticated) {
-//       dispatch(logout());
-//     }
+//     const checkAuth = async () => {
+//       if (token && !isAuthenticated) {
+//         dispatch(logout());
+//       }
+//       setIsChecking(false);
+//     };
+//     checkAuth();
 //   }, [dispatch, token, isAuthenticated]);
 
+//   if (isChecking) return null; // Prevent rendering until auth check completes
 //   return null;
 // };
 
-// const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'admin' }) => {
-//   const { user, isAuthenticated } = useSelector((state: RootState) => state.user);
+// const ProtectedRoute = ({
+//   children,
+//   requiredRole,
+//   redirectTo = "/login", // Default redirect for unauthorized access
+// }: {
+//   children: React.ReactNode;
+//   requiredRole?: "admin";
+//   redirectTo?: string;
+// }) => {
+//   const { user, isAuthenticated } = useSelector((state: RootState) => state.user) || { user: null, isAuthenticated: false };
 
 //   if (!isAuthenticated) {
-//     return <Navigate to="/login" />;
+//     return <Navigate to={redirectTo} replace />;
 //   }
 //   if (requiredRole && user?.role !== requiredRole) {
-//     return <Navigate to="/user/dashboard" />;
+//     return <Navigate to="/user/dashboard" replace />;
 //   }
 //   return children;
 // };
+
+// // NotFoundPage (if not existing, create a simple one)
+// const NotFoundPage = () => <div style={{ padding: "2rem", textAlign: "center" }}>404 - Page Not Found</div>;
 
 // function App() {
 //   return (
@@ -55,107 +81,7 @@
 //         <Route
 //           path="/admin/dashboard"
 //           element={
-//             <ProtectedRoute requiredRole="admin">
-//               <AdminDashboard />
-//             </ProtectedRoute>
-//           }
-//         >
-//           <Route path="events" element={<ManageEvents />} />
-//           <Route path="bookings" element={<ManageBookings />} />
-//           <Route path="support-tickets" element={<ManageSupportTickets />} /> {/* New route */}
-//         </Route>
-//         <Route
-//           path="/user/dashboard"
-//           element={
-//             <ProtectedRoute>
-//               <UserDashboard />
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route
-//           path="/dashboard/analytics"
-//           element={
-//             <ProtectedRoute requiredRole="admin">
-//               <div>Analytics Dashboard</div>
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route path="*" element={<Navigate to="/" />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-
-
-
-
-
-
-
-
-
-// // src/App.tsx
-// import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-// import { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logout } from './features/login/userSlice';
-// import type { RootState } from './app/store';
-
-// import LandingPage from './pages/LandingPage';
-// import AboutPage from './pages/AboutPage';
-// import Register from './pages/auth/Register';
-// import VerifyUser from './pages/auth/VerifyUser';
-// import Login from './pages/auth/Login';
-// import AdminDashboard from './dashboard/AdminDashboard/AdminDashboard';
-// import UserDashboard from './dashboard/UserDashboard/UserDashboard';
-// import ManageEvents from './dashboard/AdminDashboard/ManageEvents/ManageEvents';
-// import ManageBookings from './dashboard/AdminDashboard/ManageBookings/ManageBookings';
-// import ManageSupportTickets from './dashboard/AdminDashboard/ManageSupportTickets/ManageSupportTickets';
-// import ManagePayments from './dashboard/AdminDashboard/ManagePayments/ManagePayments'; // New import
-
-// // Component to check authentication and role
-// const AuthChecker = () => {
-//   const dispatch = useDispatch();
-//   const { token, isAuthenticated } = useSelector((state: RootState) => state.user);
-
-//   useEffect(() => {
-//     if (token && !isAuthenticated) {
-//       dispatch(logout());
-//     }
-//   }, [dispatch, token, isAuthenticated]);
-
-//   return null;
-// };
-
-// const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'admin' }) => {
-//   const { user, isAuthenticated } = useSelector((state: RootState) => state.user);
-
-//   if (!isAuthenticated) {
-//     return <Navigate to="/login" />;
-//   }
-//   if (requiredRole && user?.role !== requiredRole) {
-//     return <Navigate to="/user/dashboard" />;
-//   }
-//   return children;
-// };
-
-// function App() {
-//   return (
-//     <Router>
-//       <AuthChecker />
-//       <Routes>
-//         <Route path="/" element={<LandingPage />} />
-//         <Route path="/about" element={<AboutPage />} />
-//         <Route path="/register" element={<Register />} />
-//         <Route path="/verify" element={<VerifyUser />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route
-//           path="/admin/dashboard"
-//           element={
-//             <ProtectedRoute requiredRole="admin">
+//             <ProtectedRoute requiredRole="admin" redirectTo="/login">
 //               <AdminDashboard />
 //             </ProtectedRoute>
 //           }
@@ -163,25 +89,25 @@
 //           <Route path="events" element={<ManageEvents />} />
 //           <Route path="bookings" element={<ManageBookings />} />
 //           <Route path="support-tickets" element={<ManageSupportTickets />} />
-//           <Route path="payments" element={<ManagePayments />} /> {/* New route */}
+//           <Route path="payments" element={<ManagePayments />} />
+//           <Route path="users" element={<Users />} />
+//           <Route path="analytics" element={<div>Analytics Dashboard</div>} />
 //         </Route>
 //         <Route
 //           path="/user/dashboard"
 //           element={
-//             <ProtectedRoute>
+//             <ProtectedRoute redirectTo="/login">
 //               <UserDashboard />
 //             </ProtectedRoute>
 //           }
-//         />
-//         <Route
-//           path="/dashboard/analytics"
-//           element={
-//             <ProtectedRoute requiredRole="admin">
-//               <div>Analytics Dashboard</div>
-//             </ProtectedRoute>
-//           }
-//         />
-//         <Route path="*" element={<Navigate to="/" />} />
+//         >
+//           <Route path="events" element={<Events />} />
+//           <Route path="bookings/book/:eventId" element={<BookEvent />} />
+//           <Route path="bookings/history" element={<BookingHistory />} />
+//           <Route path="profile" element={<ProfileManagement />} />
+//           <Route path="payments" element={<div>Payments Placeholder</div>} />
+//         </Route>
+//         <Route path="*" element={<NotFoundPage />} /> {/* Updated wildcard route */}
 //       </Routes>
 //     </Router>
 //   );
@@ -198,52 +124,74 @@
 
 
 
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./features/login/userSlice";
+import type { RootState } from "./app/store";
 
-// src/App.tsx
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from './features/login/userSlice';
-import type { RootState } from './app/store';
+// Pages
+import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/AboutPage";
+import Register from "./pages/auth/Register";
+import VerifyUser from "./pages/auth/VerifyUser";
+import Login from "./pages/auth/Login";
+// import NotFoundPage from "./pages/NotFoundPage"; // Assume this exists or create it
 
-import LandingPage from './pages/LandingPage';
-import AboutPage from './pages/AboutPage';
-import Register from './pages/auth/Register';
-import VerifyUser from './pages/auth/VerifyUser';
-import Login from './pages/auth/Login';
-import AdminDashboard from './dashboard/AdminDashboard/AdminDashboard';
-import UserDashboard from './dashboard/UserDashboard/UserDashboard';
-import ManageEvents from './dashboard/AdminDashboard/ManageEvents/ManageEvents';
-import ManageBookings from './dashboard/AdminDashboard/ManageBookings/ManageBookings';
-import ManageSupportTickets from './dashboard/AdminDashboard/ManageSupportTickets/ManageSupportTickets';
-import ManagePayments from './dashboard/AdminDashboard/ManagePayments/ManagePayments';
-import Users from './dashboard/AdminDashboard/ManageUsers/Users'; // New import
+// Dashboards and Components
+import AdminDashboard from "./dashboard/AdminDashboard/AdminDashboard";
+import UserDashboard from "./dashboard/UserDashboard/UserDashboard";
+import ManageEvents from "./dashboard/AdminDashboard/ManageEvents/ManageEvents";
+import ManageBookings from "./dashboard/AdminDashboard/ManageBookings/ManageBookings";
+import ManageSupportTickets from "./dashboard/AdminDashboard/ManageSupportTickets/ManageSupportTickets";
+import ManagePayments from "./dashboard/AdminDashboard/ManagePayments/ManagePayments";
+import Users from "./dashboard/AdminDashboard/ManageUsers/Users";
+import Events from "./dashboard/UserDashboard/Events/Events";
+import BookingHistory from "./dashboard/UserDashboard/Bookings/BookingHistory";
+import ProfileManagement from "./dashboard/UserDashboard/Profile/ProfileManagement";
 
 // Component to check authentication and role
 const AuthChecker = () => {
   const dispatch = useDispatch();
   const { token, isAuthenticated } = useSelector((state: RootState) => state.user);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    if (token && !isAuthenticated) {
-      dispatch(logout());
-    }
+    const checkAuth = async () => {
+      if (token && !isAuthenticated) {
+        dispatch(logout());
+      }
+      setIsChecking(false);
+    };
+    checkAuth();
   }, [dispatch, token, isAuthenticated]);
 
+  if (isChecking) return null; // Prevent rendering until auth check completes
   return null;
 };
 
-const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'admin' }) => {
-  const { user, isAuthenticated } = useSelector((state: RootState) => state.user);
+const ProtectedRoute = ({
+  children,
+  requiredRole,
+  redirectTo = "/login", // Default redirect for unauthorized access
+}: {
+  children: React.ReactNode;
+  requiredRole?: "admin";
+  redirectTo?: string;
+}) => {
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.user) || { user: null, isAuthenticated: false };
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to={redirectTo} replace />;
   }
   if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/user/dashboard" />;
+    return <Navigate to="/user/dashboard" replace />;
   }
   return children;
 };
+
+// NotFoundPage (if not existing, create a simple one)
+const NotFoundPage = () => <div style={{ padding: "2rem", textAlign: "center" }}>404 - Page Not Found</div>;
 
 function App() {
   return (
@@ -258,7 +206,7 @@ function App() {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute requiredRole="admin">
+            <ProtectedRoute requiredRole="admin" redirectTo="/login">
               <AdminDashboard />
             </ProtectedRoute>
           }
@@ -267,28 +215,37 @@ function App() {
           <Route path="bookings" element={<ManageBookings />} />
           <Route path="support-tickets" element={<ManageSupportTickets />} />
           <Route path="payments" element={<ManagePayments />} />
-          <Route path="users" element={<Users />} /> {/* New route */}
+          <Route path="users" element={<Users />} />
+          <Route path="analytics" element={<div>Analytics Dashboard</div>} />
         </Route>
         <Route
           path="/user/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute redirectTo="/login">
               <UserDashboard />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/dashboard/analytics"
-          element={
-            <ProtectedRoute requiredRole="admin">
-              <div>Analytics Dashboard</div>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" />} />
+        >
+          <Route path="events" element={<Events />} />
+          <Route path="bookings/history" element={<BookingHistory />} />
+          <Route path="profile" element={<ProfileManagement />} />
+          <Route path="payments" element={<div>Payments Placeholder</div>} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} /> {/* Updated wildcard route */}
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
