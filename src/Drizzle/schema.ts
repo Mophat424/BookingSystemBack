@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, timestamp, integer, pgEnum, text, decimal, uniqueIndex, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, timestamp, integer, pgEnum, text, decimal } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // ENUMs
