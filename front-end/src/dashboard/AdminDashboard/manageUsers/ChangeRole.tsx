@@ -1,14 +1,149 @@
-// src/dashboard/AdminDashboard/manageUsers/changeRole.tsx
+// import { useForm, type SubmitHandler } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
+// import { useAppDispatch, useAppSelector } from "../../../app/store";
+// import { updateUser } from "../../../features/users/userListSlice";
+// import { toast } from "sonner";
+// import { useEffect } from "react";
+// import '../ManageUsers/ManageUsers.css';
+
+// interface PublicUser {
+//   user_id: number;
+//   first_name: string;
+//   last_name: string;
+//   email: string;
+//   role: "user" | "admin" | null;
+//   isVerified?: boolean;
+//   created_at?: string;
+//   updated_at?: string;
+//   image_url?: string;
+//   contact_phone?: string;
+//   address?: string;
+// }
+
+// type ChangeRoleProps = {
+//   user: PublicUser | null;
+//   isOpen: boolean;
+//   onClose: () => void;
+// };
+
+// type ChangeRoleInputs = {
+//   role: "user" | "admin";
+// };
+
+// const schema = yup.object({
+//   role: yup.string().oneOf(["user", "admin"]).required("Role is required"),
+// });
+
+// const ChangeRole = ({ user, isOpen, onClose }: ChangeRoleProps) => {
+//   const dispatch = useAppDispatch();
+//   const token = useAppSelector((state) => state.user.token);
+
+//   const {
+//     register,
+//     handleSubmit,
+//     reset,
+//     setValue,
+//     formState: { errors },
+//   } = useForm<ChangeRoleInputs>({
+//     resolver: yupResolver(schema),
+//     defaultValues: {
+//       role: user ? (user.role as "user" | "admin") : "user",
+//     },
+//   });
+
+//   useEffect(() => {
+//     if (user && isOpen) {
+//       setValue("role", user.role as "user" | "admin");
+//     } else if (!isOpen) {
+//       reset();
+//     }
+//   }, [user, isOpen, setValue, reset]);
+
+//   const onSubmit: SubmitHandler<ChangeRoleInputs> = async (data) => {
+//     if (!user) {
+//       toast.error("No user selected for role change.");
+//       return;
+//     }
+//     if (!token) {
+//       toast.error("Authentication token missing.");
+//       return;
+//     }
+//     try {
+//       const response = await fetch(`http://localhost:8081/auth/users/${user.user_id}`, {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//         body: JSON.stringify({ role: data.role }),
+//       });
+//       if (!response.ok) {
+//         const errorText = await response.text();
+//         throw new Error(`Failed to update role: ${errorText || response.statusText}`);
+//       }
+//       const updatedUser = { ...user, role: data.role };
+//       dispatch(updateUser(updatedUser));
+//       toast.success("Role updated successfully!");
+//       onClose();
+//     } catch (error) {
+//       console.error("Error updating role:", error);
+//       toast.error(`Failed to update role: ${error instanceof Error ? error.message : "Unknown error"}`);
+//     }
+//   };
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <dialog id="role_modal" className="modal modal-middle" open>
+//       <div className="modal-box bg-gray-600 text-white w-full max-w-xs sm:max-w-lg mx-auto rounded-lg">
+//         <h3 className="font-bold text-lg mb-4">
+//           Change Role for {user?.first_name} {user?.last_name}
+//         </h3>
+//         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+//           <label className="text-white font-semibold">Select Role:</label>
+//           <select
+//             {...register("role")}
+//             className="select select-bordered w-full bg-white text-black dark:bg-gray-200 dark:text-black p-2 rounded"
+//           >
+//             <option value="user">User</option>
+//             <option value="admin">Admin</option>
+//           </select>
+//           {errors.role && <span className="text-sm text-red-700">{errors.role.message}</span>}
+//           <div className="modal-action flex flex-col sm:flex-row gap-2 mt-4">
+//             <button type="submit" className="btn btn-primary w-full sm:w-auto p-2">
+//               Update Role
+//             </button>
+//             <button
+//               className="btn w-full sm:w-auto p-2"
+//               type="button"
+//               onClick={onClose}
+//             >
+//               Cancel
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </dialog>
+//   );
+// };
+
+// export default ChangeRole;
+
+
+
+
+
+
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useAppDispatch } from "../../../app/store";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { updateUser } from "../../../features/users/userListSlice";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import '../ManageUsers/ManageUsers.css'; // Adjust path
+import '../ManageUsers/ManageUsers.css';
 
-// Define PublicUser interface locally
 interface PublicUser {
   user_id: number;
   first_name: string;
@@ -25,6 +160,8 @@ interface PublicUser {
 
 type ChangeRoleProps = {
   user: PublicUser | null;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 type ChangeRoleInputs = {
@@ -35,8 +172,9 @@ const schema = yup.object({
   role: yup.string().oneOf(["user", "admin"]).required("Role is required"),
 });
 
-const ChangeRole = ({ user }: ChangeRoleProps) => {
+const ChangeRole = ({ user, isOpen, onClose }: ChangeRoleProps) => {
   const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.user.token);
 
   const {
     register,
@@ -52,70 +190,63 @@ const ChangeRole = ({ user }: ChangeRoleProps) => {
   });
 
   useEffect(() => {
-    if (user) {
+    if (user && isOpen) {
       setValue("role", user.role as "user" | "admin");
-    } else {
+    } else if (!isOpen) {
       reset();
     }
-  }, [user, setValue, reset]);
+  }, [user, isOpen, setValue, reset]);
 
   const onSubmit: SubmitHandler<ChangeRoleInputs> = async (data) => {
+    if (!user) {
+      toast.error("No user selected for role change.");
+      return;
+    }
+    if (!token) {
+      toast.error("Authentication token missing.");
+      return;
+    }
     try {
-      if (!user) {
-        toast.error("No user selected for role change.");
-        return;
-      }
       const response = await fetch(`http://localhost:8081/auth/users/${user.user_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Adjust based on your token storage
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ role: data.role }),
       });
-      if (!response.ok) throw new Error('Failed to update role');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update role: ${errorText || response.statusText}`);
+      }
       const updatedUser = { ...user, role: data.role };
-      dispatch(updateUser(updatedUser)); // Use the action
+      dispatch(updateUser(updatedUser));
       toast.success("Role updated successfully!");
-      reset();
-      (document.getElementById('role_modal') as HTMLDialogElement)?.close();
+      onClose();
     } catch (error) {
       console.error("Error updating role:", error);
-      toast.error("Failed to update role. Please try again.");
+      toast.error(`Failed to update role: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <dialog id="role_modal" className="modal sm:modal-middle">
-      <div className="modal-box bg-gray-600 text-white w-full max-w-xs sm:max-w-lg mx-auto rounded-lg">
-        <h3 className="font-bold text-lg mb-4">
-          Change Role for {user?.first_name} {user?.last_name}
-        </h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <label className="text-white font-semibold">Select Role:</label>
-          <select
-            {...register("role")}
-            className="select select-bordered w-full bg-white text-black dark:bg-gray-200 dark:text-black"
-          >
+    <dialog id="role_modal" className="manage-users-modal" open>
+      <div className="manage-users-modal-box">
+        <h3>Change Role for {user?.first_name} {user?.last_name}</h3>
+        <form onSubmit={handleSubmit(onSubmit)} className="manage-users-modal-box form">
+          <label>Select Role:</label>
+          <select {...register("role")} className="manage-users-modal-box select">
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
-          {errors.role && (
-            <span className="text-sm text-red-700">{errors.role.message}</span>
-          )}
-
-          <div className="modal-action flex flex-col sm:flex-row gap-2">
-            <button type="submit" className="btn btn-primary w-full sm:w-auto">
+          {errors.role && <span className="error-text">{errors.role.message}</span>}
+          <div className="modal-action">
+            <button type="submit" className="btn btn-primary">
               Update Role
             </button>
-            <button
-              className="btn w-full sm:w-auto"
-              type="button"
-              onClick={() => {
-                (document.getElementById('role_modal') as HTMLDialogElement)?.close();
-                reset();
-              }}
-            >
+            <button type="button" className="btn" onClick={onClose}>
               Cancel
             </button>
           </div>
