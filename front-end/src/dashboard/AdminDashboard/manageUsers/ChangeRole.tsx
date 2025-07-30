@@ -61,15 +61,18 @@
 //   }, [user, isOpen, setValue, reset]);
 
 //   const onSubmit: SubmitHandler<ChangeRoleInputs> = async (data) => {
+//     console.log("Submitting role change:", data); // Debug log
 //     if (!user) {
 //       toast.error("No user selected for role change.");
 //       return;
 //     }
 //     if (!token) {
 //       toast.error("Authentication token missing.");
+//       console.error("No token available");
 //       return;
 //     }
 //     try {
+//       console.log("Sending request to:", `http://localhost:8081/auth/users/${user.user_id}`);
 //       const response = await fetch(`http://localhost:8081/auth/users/${user.user_id}`, {
 //         method: "PUT",
 //         headers: {
@@ -78,9 +81,10 @@
 //         },
 //         body: JSON.stringify({ role: data.role }),
 //       });
+//       const responseText = await response.text(); // Log full response
+//       console.log("API Response:", response.status, responseText);
 //       if (!response.ok) {
-//         const errorText = await response.text();
-//         throw new Error(`Failed to update role: ${errorText || response.statusText}`);
+//         throw new Error(`Failed to update role: ${responseText || response.statusText}`);
 //       }
 //       const updatedUser = { ...user, role: data.role };
 //       dispatch(updateUser(updatedUser));
@@ -95,30 +99,21 @@
 //   if (!isOpen) return null;
 
 //   return (
-//     <dialog id="role_modal" className="modal modal-middle" open>
-//       <div className="modal-box bg-gray-600 text-white w-full max-w-xs sm:max-w-lg mx-auto rounded-lg">
-//         <h3 className="font-bold text-lg mb-4">
-//           Change Role for {user?.first_name} {user?.last_name}
-//         </h3>
-//         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-//           <label className="text-white font-semibold">Select Role:</label>
-//           <select
-//             {...register("role")}
-//             className="select select-bordered w-full bg-white text-black dark:bg-gray-200 dark:text-black p-2 rounded"
-//           >
+//     <dialog id="role_modal" className="manage-users-modal" open>
+//       <div className="manage-users-modal-box">
+//         <h3>Change Role for {user?.first_name} {user?.last_name}</h3>
+//         <form onSubmit={handleSubmit(onSubmit)} className="manage-users-modal-box form">
+//           <label>Select Role:</label>
+//           <select {...register("role")} className="manage-users-modal-box select">
 //             <option value="user">User</option>
 //             <option value="admin">Admin</option>
 //           </select>
-//           {errors.role && <span className="text-sm text-red-700">{errors.role.message}</span>}
-//           <div className="modal-action flex flex-col sm:flex-row gap-2 mt-4">
-//             <button type="submit" className="btn btn-primary w-full sm:w-auto p-2">
+//           {errors.role && <span className="error-text">{errors.role.message}</span>}
+//           <div className="modal-action">
+//             <button type="submit" className="btn btn-primary">
 //               Update Role
 //             </button>
-//             <button
-//               className="btn w-full sm:w-auto p-2"
-//               type="button"
-//               onClick={onClose}
-//             >
+//             <button type="button" className="btn" onClick={onClose}>
 //               Cancel
 //             </button>
 //           </div>
@@ -134,7 +129,6 @@
 
 
 
-
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -143,6 +137,9 @@ import { updateUser } from "../../../features/users/userListSlice";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import '../ManageUsers/ManageUsers.css';
+
+// Define the API base URL
+const API_BASE_URL = "http://localhost:8081";
 
 interface PublicUser {
   user_id: number;
@@ -207,7 +204,8 @@ const ChangeRole = ({ user, isOpen, onClose }: ChangeRoleProps) => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8081/auth/users/${user.user_id}`, {
+      const endpoint = `${API_BASE_URL}/users/${user.user_id}`;
+      const response = await fetch(endpoint, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -215,16 +213,15 @@ const ChangeRole = ({ user, isOpen, onClose }: ChangeRoleProps) => {
         },
         body: JSON.stringify({ role: data.role }),
       });
+      const responseText = await response.text();
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to update role: ${errorText || response.statusText}`);
+        throw new Error(`Failed to update role: ${responseText || response.statusText}`);
       }
       const updatedUser = { ...user, role: data.role };
       dispatch(updateUser(updatedUser));
       toast.success("Role updated successfully!");
       onClose();
     } catch (error) {
-      console.error("Error updating role:", error);
       toast.error(`Failed to update role: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };

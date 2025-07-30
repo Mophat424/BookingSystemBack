@@ -1,4 +1,4 @@
-.landing-container {
+/* .landing-container {
   font-family: 'Arial', sans-serif;
   color: #333;
   background-color: #f5f7fa;
@@ -109,5 +109,51 @@
   .get-started-button {
     padding: 10px 20px;
     font-size: 1rem;
+  }
+} */
+
+
+
+/* src/pages/LandingPage.css */
+.landing-container {
+  font-family: 'Arial', sans-serif;
+  color: white; /* White font color for all text */
+  min-height: 100vh;
+  background-image: url('../assets/images/event2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.landing-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+  z-index: 1;
+}
+
+.landing-container > * {
+  position: relative;
+  z-index: 2; /* Content above overlay */
+}
+
+/* Ensure Nav and Footer have readable backgrounds */
+nav, footer {
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent black for Nav and Footer */
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  nav, footer {
+    padding: 0.5rem;
   }
 }

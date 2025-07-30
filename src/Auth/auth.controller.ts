@@ -117,16 +117,35 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 };
 
 // Update user controller
+// export const update = async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const { userId } = req.params; // Assuming route is /auth/update/:userId
+//     const { email, currentPassword, newPassword, updateType } = req.body;
+//     const result = await updateUser(Number(userId), {
+//       email,
+//       currentPassword,
+//       newPassword,
+//       updateType,
+//     });
+//     res.status(200).json(result);
+//   } catch (error: any) {
+//     res.status(400).json({ message: error.message });
+//   }
+// };
+
+
+// Update user controller
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId } = req.params; // Assuming route is /auth/update/:userId
-    const { email, currentPassword, newPassword, updateType } = req.body;
+    const { userId } = req.params;
+    const { email, currentPassword, newPassword } = req.body;
+
     const result = await updateUser(Number(userId), {
       email,
       currentPassword,
       newPassword,
-      updateType,
     });
+
     res.status(200).json(result);
   } catch (error: any) {
     res.status(400).json({ message: error.message });

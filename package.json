@@ -8,6 +8,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
+    "push": "drizzle-kit push",
     "generate": "drizzle-kit generate",
     "migrate": "tsx src/drizzle/migrate.ts",
     "seed": "tsx src/Drizzle/seed.ts"
@@ -39,6 +40,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
