@@ -66,13 +66,19 @@ import authRoutes from "./Auth/auth.routes";
 const app: Express = express();
 
 // Middleware
-app.use(cors({
-  origin: [
-    "http://localhost:5173", // local dev
-    "https://bookingsystemfront.onrender.com" // deployed frontend
-  ],
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: [
+//     "http://localhost:5173", // local dev
+//     "https://bookingsystemfront.onrender.com" // deployed frontend
+//   ],
+//   credentials: true,
+// }));
+// app.use(express.json());
+
+ app.use(cors({
+        origin: '*',
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    }))
 app.use(express.json());
 
 // Routes
