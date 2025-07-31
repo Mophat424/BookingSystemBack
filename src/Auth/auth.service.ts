@@ -373,7 +373,11 @@ export const registerUser = async (data: {
   address?: string;
   role?: string;
 }): Promise<{ message: string; token: string; user: PublicUser }> => {
-  const normalizedRole = data.role?.toLowerCase() === "admin" ? "admin" : "user";
+  // const normalizedRole = data.role?.toLowerCase() === "admin" ? "admin" : "user";
+  const normalizedRole =
+  data.role && ["admin", "user"].includes(data.role.toLowerCase())
+    ? data.role.toLowerCase() as "admin" | "user"
+    : "user";
 
   if (data.role && !["admin", "user"].includes(normalizedRole)) {
     throw new Error("Invalid role specified");
@@ -491,54 +495,6 @@ export const verifyOtp = async (
     },
   };
 };
-
-// UPDATE USER
-// export const updateUser = async (
-//   userId: number,
-//   data: { email?: string; currentPassword?: string; newPassword?: string; updateType: string }
-// ): Promise<{ message: string; user: PublicUser }> => {
-//   const [user] = await db.select().from(users).where(eq(users.user_id, userId));
-
-//   if (!user) throw new Error("User not found");
-
-//   if (data.updateType === "email") {
-//     if (!data.email) throw new Error("Email is required");
-//     await db.update(users).set({ email: data.email }).where(eq(users.user_id, userId));
-//     return {
-//       message: "Email updated successfully",
-//       user: {
-//         id: user.user_id,
-//         email: data.email,
-//         name: `${user.first_name} ${user.last_name}`.trim() || "Unnamed User",
-//         role: user.role,
-//       },
-//     };
-//   }
-
-//   if (data.updateType === "password") {
-//     if (!data.currentPassword || !data.newPassword) {
-//       throw new Error("Current and new passwords are required");
-//     }
-//     if (!user.password)
-//        throw new Error("User does not have a password set");
-//     const isMatch = await bcrypt.compare(data.currentPassword, user.password);
-
-//     if (!isMatch) throw new Error("Invalid current password");
-//     const hashedPassword = await bcrypt.hash(data.newPassword, 10);
-//     await db.update(users).set({ password: hashedPassword }).where(eq(users.user_id, userId));
-//     return {
-//       message: "Password updated successfully",
-//       user: {
-//         id: user.user_id,
-//         email: user.email,
-//         name: `${user.first_name} ${user.last_name}`.trim() || "Unnamed User",
-//         role: user.role,
-//       },
-//     };
-//   }
-
-//   throw new Error("Invalid update type");
-// };
 
 
 export const updateUser = async (
